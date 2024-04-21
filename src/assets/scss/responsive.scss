@@ -1,0 +1,246 @@
+@media only screen and (max-width:500px) {
+    .deskView {
+        display: none;
+    }
+
+    .mobiView {
+        display: block !important;
+    }
+
+    .gameShow {
+        .navbar {
+            padding: 12px 3px;
+
+            .logoShow {
+                img {
+                    width: 62px;
+                }
+
+                .howToPlay {
+                    width: 173px;
+                    padding: 4px 6px;
+                    margin-left: 11px;
+
+                    h6 {
+                        margin: 0px;
+                        font-size: 10px;
+                        margin-left: 4px;
+
+                        font-weight: 600;
+                        color: #5f3816;
+                    }
+
+                    .showProfile {
+                        padding: 0px !important;
+                    }
+                }
+            }
+
+            .showProfile {
+                .showProfileBalance {
+                    .balance {
+                        padding: 0px 5px;
+
+                        h6 {
+                            font-size: 12px;
+                            text-align: center;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+
+                .profileShow {
+                    .imgShow {
+                        background: #2c2d30;
+                        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7019607843);
+                        display: flex;
+                        justify-content: center;
+                        padding: 4px;
+                        border-radius: 8px;
+                        margin-left: 10px;
+                        align-items: center;
+
+                        img {
+                            width: 30px;
+                            height: 30px;
+                        }
+
+                        h6 {
+                            padding-right: 11px;
+                            font-size: 12px;
+                            margin-bottom: 0px;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .gameBox {
+            padding: 0px 8px;
+            margin-top: -4px;
+            border-top: 1px solid #464648;
+
+            .betHistory {
+                margin-top: 13px !important;
+
+                .showBet {
+                    h6 {
+                        margin-left: 13px;
+                        font-size: 11px;
+                    }
+
+                    .showButton {
+                        button {
+                            padding: 5px 8px;
+                            width: 58px;
+
+                            i {
+                                font-size: 13px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .chartShow {
+                margin-left: 18px;
+                padding-right: 18px;
+
+                .background-video {
+                    .videoShow {
+                        video {
+                            height: 200px;
+                        }
+                    }
+                }
+
+                .showCanvasShow {
+                    canvas {
+                        height: 200px;
+                        width: 368px;
+                    }
+                }
+
+                .yData {
+                    height: 200px;
+                    font-size: 28px;
+                }
+
+                .winDetail {
+                    height: 200px;
+
+                    h6 {
+                        font-size: 18px;
+                    }
+
+                    h5 {
+                        font-size: 24px;
+                    }
+                }
+
+                .loaderGame {
+                    transform: translate(50%, 42%);
+
+                    img {
+                        width: 60px;
+                        height: 60px;
+                    }
+
+                    h6 {
+                        margin-top: 16px;
+                        margin-bottom: 0px;
+                        font-weight: 400;
+                        font-size: 12px;
+                    }
+
+                    .progressShow {
+                        margin-top: 10px;
+
+                        .progress {
+                            height: 7px;
+
+                            .progress-bar {
+                                height: 7px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .betButtonShow {
+                margin-top: 218px;
+
+                .showButton {
+                    padding: 8px 6px;
+                    width: 90%;
+                    border-radius: 10px;
+                    padding-bottom: 8px;
+                    margin-bottom: 10px;
+
+                    .showBetButtonBet {
+                        .betTopButton {
+                            height: 35px;
+                            background: rgb(20, 21, 22);
+                            border-radius: 10px;
+                            width: 183px;
+                            border: solid 1px #141516;
+                            position: relative;
+                            padding: 8px;
+
+                            button {
+                                height: 20px;
+                                font-size: 12px;
+                                background-color: transparent;
+                                color: #676d7d;
+                                border: none;
+                                font-size: 12px;
+                                width: 80px;
+                            }
+                        }
+                    }
+
+                    .buttonAutoNumber {
+                        margin: 0px;
+
+                        .autoBetDetails {
+                            .autoButton {
+                                max-width: 110px;
+
+                                i {
+                                    font-size: 20px;
+
+                                }
+
+                                span {
+                                    font-size: 12px;
+                                }
+                            }
+
+                            .showNumber {
+                                span {
+                                    font-size: 12px;
+                                    width: 70px;
+                                    height: 20px;
+                                }
+                            }
+                        }
+
+                        .betButton {
+                            .betMainButton {
+                                h6 {
+                                    font-size: 14px;
+                                    margin: 6px;
+                                }
+                                h5{
+                                    font-size: 16px;
+                                    margin: 3px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
