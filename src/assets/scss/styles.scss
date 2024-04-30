@@ -87,6 +87,443 @@
         }
       }
     }
+
+    .showMenu {
+      display: block !important;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      border-left: 1px solid #464648;
+      margin-left: 5px;
+      padding-left: 10px;
+      font-size: 18px;
+
+      i {
+        color: #6d6f78;
+      }
+    }
+
+    .showMenuContent {
+      max-width: 250px;
+      height: 300px;
+      background-color: #2c2d30;
+      position: absolute;
+      z-index: 999999999999;
+      max-height: 300px;
+      right: 1%;
+      top: 70%;
+      border-radius: 5px;
+
+      .showMenuBody {
+        width: 250px;
+        height: 300px;
+
+        .profileContent {
+          padding: 8px 6px;
+
+          .imgShow {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            img {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+            }
+
+            h6 {
+              margin: 0px;
+              color: white;
+              margin-left: 10px;
+              font-size: 14px;
+            }
+          }
+        }
+
+        .showMenuButton {
+          .showMenuBox {
+            background-color: #1b1c1d;
+            padding: 14px 7px;
+            display: flex;
+            cursor: pointer;
+            justify-content: space-between;
+            user-select: none;
+            align-items: center;
+            border-top: solid 1px rgba(255, 255, 255, .1);
+
+            .showIcon {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+
+              i {
+                color: #767474;
+                font-size: 17px;
+              }
+
+              h5 {
+                font-size: 13px;
+                margin-left: 10px !important;
+                color: white;
+                margin: 0px;
+              }
+            }
+
+            .offSwitch {
+              border: 1px solid rgba(255, 255, 255, .51) !important;
+              background: none !important;
+              justify-content: flex-start !important;
+            }
+
+            .onSwitch {
+              order: solid 1px #60ae05;
+              background-color: #229607;
+              justify-content: flex-end !important;
+            }
+
+            .switch {
+              display: flex;
+              align-items: center;
+              cursor: pointer;
+              position: relative;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              user-select: none;
+              padding: 0 2px;
+              width: 40px;
+              height: 20px;
+              border-radius: 9px;
+
+              span {
+                min-width: 14px;
+                max-width: 14px;
+                height: 14px;
+                box-shadow: inset 0 0 7px #00000029;
+                background-color: #fff;
+                border: solid 2px #a3b98a;
+                border-radius: 50%;
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+  .model {
+    align-items: center;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    background-color: #0000006b;
+    display: inline-flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99999999;
+
+    .mainBox {
+      max-width: 50vh;
+      width: 100%;
+      height: auto;
+
+      .modelHead {
+        border: 0;
+        padding: 0 10px;
+        height: 36px;
+        align-items: center;
+        font-size: 16px;
+        background: #2c2d30;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 400 !important;
+
+        h6 {
+          color: #fff;
+          margin: 0px;
+          font-size: 16px;
+          text-transform: uppercase;
+        }
+
+        button {
+          background-color: transparent;
+          border: none;
+          outline: none;
+          width: 24px;
+          height: 24px;
+
+
+
+          i {
+            font-size: 20px;
+
+            &::before {
+              color: #97a4ae;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .model {
+    align-items: center;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    background-color: #0000006b;
+    display: inline-flex;
+    height: 100vh;
+    justify-content: center;
+    z-index: 9999999999999999;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    .mainBox {
+      max-width: 50vh;
+      width: 100%;
+      border-radius: 10px;
+      background-color: #101112;
+      height: auto;
+
+      .modelHead {
+        border: 0;
+        padding: 0 10px;
+        height: 36px;
+        align-items: center;
+        font-size: 16px;
+        background: #2c2d30;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 400 !important;
+
+        h6 {
+          color: #fff;
+          margin: 0px;
+          font-size: 16px;
+          text-transform: uppercase;
+        }
+
+        button {
+          background-color: transparent;
+          border: none;
+          outline: none;
+          width: 24px;
+          height: 24px;
+
+
+
+          i {
+            font-size: 20px;
+
+            &::before {
+              color: #97a4ae;
+            }
+          }
+        }
+      }
+
+      .modelBody {
+        padding: 3px 10px;
+
+        .showTable {
+          height: 100vh;
+          max-height: 50vh;
+          padding-right: 10px;
+          overflow: scroll;
+          display: block;
+
+          &::-webkit-scrollbar-thumb {
+            background: rgba(87, 96, 102, 0.5) !important;
+            border-radius: 5px !important;
+            margin-left: 10px;
+          }
+
+          &::-webkit-scrollbar {
+            width: 5px !important;
+            background: transparent !important;
+          }
+
+          table {
+            margin-top: 10px;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0px 6px;
+
+            th {
+              font-size: 12px;
+              color: #7b7b7b;
+              text-align: center;
+              height: 20px;
+            }
+
+            tbody {
+              margin-top: 10px;
+
+              tr {
+                td {
+                  padding: 3px 5px;
+                  height: 34px;
+                  background-color: #242424;
+                  border: solid 1px #242424;
+                  text-align: center;
+                  font-size: 14px;
+                  margin: 2px 6px;
+                  color: #bbbfc5;
+
+                  &:nth-child(1) {
+                    border-top-left-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                  }
+
+                  &:nth-last-child(1) {
+                    border-top-right-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                  }
+
+                  .userBet {
+                    display: flex;
+                    align-items: center;
+
+                    img {
+                      width: 30px;
+                      border-radius: 45px;
+                      height: 30px;
+                    }
+
+                    h6 {
+                      font-size: 13px;
+                      margin: 0px;
+                      margin-left: 6px;
+                      color: #9ea0a3;
+                    }
+                  }
+
+                  span {
+                    font-size: 14px;
+                    color: #bbbfc5;
+                  }
+                }
+              }
+
+              .cashoutUsd {
+                td {
+                  background-color: #123405;
+                  color: #fff;
+                  border: 1px solid #427f00;
+
+                  &:nth-child(2) span {
+                    color: white;
+                    font-weight: 600;
+                  }
+
+                  &:nth-last-child(1) span {
+                    color: white;
+                    font-weight: 600;
+                  }
+
+                  &:nth-child(1) {
+                    border-right: unset;
+                  }
+
+                  &:nth-child(2) {
+                    border-right: unset;
+                    border-left: unset;
+                  }
+
+                  &:nth-child(3) {
+                    border-right: unset;
+                    border-left: unset;
+                  }
+
+                  &:nth-child(4) {
+                    border-left: unset;
+                  }
+
+                  .betxShow {
+                    background-color: rgba(0, 0, 0, 0.5019607843);
+                    padding: 3px 18px;
+                    border-radius: 11px;
+                    font-weight: 600;
+                    font-size: 13px;
+                    color: rgb(52, 180, 255);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .myBetShowModel {
+    .showTable {
+      position: relative;
+
+      table {
+        h6 {
+          position: absolute;
+          color: #8b8b8b;
+          top: 50%;
+          left: 40%;
+
+        }
+      }
+    }
+  }
+
+  .gameLimitModel {
+    .modelBody {
+      padding: 32px 12px !important;
+
+      .showBoxGame {
+        background-color: transparent;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, .1);
+
+        .showDetial {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+          height: 34px;
+          border-bottom: 1px solid rgba(255, 255, 255, .1);
+          color: #fff;
+          color: #fff;
+          padding: 0px 10px 0px 10px;
+
+          &:nth-last-child(1) {
+            border-bottom: 0;
+          }
+
+          h6 {
+            margin: 0px;
+            font-size: 14px;
+          }
+
+          span {
+            padding: 0px 10px;
+            border-radius: 11px;
+            background-color: #123405;
+            border: 1px solid #427f00;
+            font-size: 14px
+          }
+
+        }
+      }
+    }
   }
 
   .mobiView {
@@ -160,6 +597,7 @@
 
           .showTable {
             height: 100vh;
+            max-height: calc(100vh - 130px);
             padding-right: 10px;
             overflow: scroll;
             display: block;
@@ -292,6 +730,34 @@
   .gameBox {
     padding: 0px 34px;
 
+    .shadowLighBlueImg {
+      background-image: linear-gradient(-90deg, #c2bbc5 0%, #009BFF 47%, #2AC9DB 100%);
+      border-radius: 100px;
+      filter: blur(126px);
+      width: 44vh;
+      height: 15vh;
+      display: flex;
+      position: absolute;
+      align-items: center;
+      left: 26%;
+      top: 18%;
+      justify-content: center;
+    }
+
+    .shadowBlueImg {
+      background-image: linear-gradient(-90deg, rgb(190 144 247) 0%, rgb(111 0 249) 47%, rgb(137 98 186) 100%);
+      border-radius: 100px;
+      filter: blur(91px);
+      width: 44vh;
+      height: 15vh;
+      display: flex;
+      position: absolute;
+      align-items: center;
+      top: 24%;
+      left: 26%;
+      justify-content: center;
+    }
+
     .rotateimage {
       position: absolute;
       z-index: 0;
@@ -412,7 +878,7 @@
       .yData {
         height: 400px;
         position: absolute;
-        z-index: 1111111111;
+        z-index: 9999;
         color: white;
         font-weight: 800;
         width: 100%;
@@ -682,6 +1148,8 @@
         padding: 26px 14px;
         width: 75%;
         background-color: #1b1c1d;
+        max-width: 600px;
+
 
         .showBetButtonBet {
           display: flex;

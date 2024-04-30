@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { userId } from './config'
 
 export default function BetButtonShow(props) {
-    const { time, socket, yData, showGameStep, userData, newStartGame, crashRocket } = props
+    const { time, socket, yData, showGameStep, userData, newStartGame, crashRocket, setAutoBetCashOutDimond, autoBetCashOutDimond } = props
     const [autoButton, setSutoButton] = useState("bet")
     const [betCoin, setBetCoin] = useState(10)
     const [autoBetSwitch, setAutoBetSwitch] = useState(false)
@@ -10,13 +10,21 @@ export default function BetButtonShow(props) {
     const [showWinnerTost, setShowWinnerTost] = useState(false)
     const [betCashOut, setBetCashOut] = useState(10)
     const [betCashOutCrash, setBetCashOutCrash] = useState(1.0)
-    const [autoBetCashOutDimond, setAutoBetCashOutDimond] = useState(1.10)
     const [betButton, setBetButton] = useState({
         cancel: false,
         cashOut: false,
         betClick: true
     })
 
+    useEffect(() => {
+        socket &&
+            socket.on("aviatorUser", (aviatorUser) => {
+                setAutoBetSwitch(aviatorUser?.AutoCollect)
+                setAutoBetSwitch(aviatorUser?.AutoBet)
+                setAutoBetCashOut(aviatorUser?.AutoCashOut)
+                setAutoBetCashOutDimond(aviatorUser?.AutoCashOutCoin)
+            });
+    }, [socket])
 
     useEffect(() => {
         if (newStartGame === true && betButton?.cancel === true && time === 0) {
@@ -61,6 +69,14 @@ export default function BetButtonShow(props) {
                 betClick: false,
             })
         }
+
+        if (betButton?.cancel === true && time > -9 && time < 0) {
+            socket.emit("cancelBet", {
+                diamond: betCoin,
+                userId: userId
+            });
+        }
+
         if (autoBetSwitch === true) {
             if (betButton?.cashOut === true) {
                 setBetButton({
@@ -69,6 +85,7 @@ export default function BetButtonShow(props) {
                     cashOut: false,
                     betClick: false,
                 })
+
                 if (showWinnerTost === false) {
                     setShowWinnerTost(true)
                     setBetCashOut(betCoin)
@@ -114,13 +131,12 @@ export default function BetButtonShow(props) {
 
     }
     useEffect(() => {
-        if (showGameStep?.showLoader === true && betButton?.cancel === true ) {
+        if (showGameStep?.showLoader === true && betButton?.cancel === true) {
             socket &&
                 socket.emit("addBet", {
                     diamond: betCoin,
                     userId: userId
                 });
-
         }
     }, [showGameStep?.showLoader, betButton, userId])
 
@@ -145,12 +161,29 @@ export default function BetButtonShow(props) {
                 })
             }
         }
-
     }, [autoBetSwitch])
 
     const hadnleOnAutoBet = () => {
+        if (autoBetSwitch === true) {
+            setAutoBetSwitch(false)
+            socket &&
+                socket.emit("autoCashOut", {
+                    AutoCashOut: autoBetCashOut,
+                    AutoBet: false,
+                    AutoCashOutCoin: autoBetCashOutDimond,
+                    userId: userId
+                });
+        } else {
+            setAutoBetSwitch(true)
+            socket &&
+                socket.emit("autoCashOut", {
+                    AutoCashOut: autoBetCashOut,
+                    AutoBet: true,
+                    AutoCashOutCoin: autoBetCashOutDimond,
+                    userId: userId
+                });
+        }
         if (betButton?.cashOut === false) {
-            setAutoBetSwitch(!autoBetSwitch)
             if (autoBetSwitch === true) {
                 setBetButton({
                     ...betButton,
@@ -160,11 +193,43 @@ export default function BetButtonShow(props) {
                 })
             }
         }
+
+    }
+    const handleAutoCashOut = (e) => {
+        socket &&
+            socket.emit("autoCashOut", {
+                AutoBet: autoBetSwitch,
+                AutoCashOut: autoBetCashOut,
+                AutoCashOutCoin: e.target.value,
+                userId: userId
+            });
+        setAutoBetCashOutDimond(e.target.value)
     }
     const handleBetIncrement = (coin) => {
         setBetCoin(parseFloat((betCoin + coin).toFixed(2)))
     }
 
+    const handleAutoCashOutSwitch = () => {
+        if (autoBetCashOut === true) {
+            setAutoBetCashOut(false)
+            socket &&
+                socket.emit("autoCashOut", {
+                    AutoCashOut: false,
+                    AutoBet: autoBetSwitch,
+                    AutoCashOutCoin: autoBetCashOutDimond,
+                    userId: userId
+                });
+        } else {
+            setAutoBetCashOut(true)
+            socket &&
+                socket.emit("autoCashOut", {
+                    AutoCashOut: true,
+                    AutoBet: autoBetSwitch,
+                    AutoCashOutCoin: autoBetCashOutDimond,
+                    userId: userId
+                });
+        }
+    }
     return (
         <>
             <div className='betButtonShow'>
@@ -229,14 +294,14 @@ export default function BetButtonShow(props) {
                             <div className='showAutoCashOut'>
                                 <div class="auto-betSwitch">
                                     <label translate="" class="ng-star-inserted">Auto Cash Out</label>
-                                    <div class="ng-untouched ng-pristine ng-valid ng-star-inserted" onClick={() => setAutoBetCashOut(!autoBetCashOut)}>
+                                    <div class="ng-untouched ng-pristine ng-valid ng-star-inserted" onClick={() => handleAutoCashOutSwitch()}>
                                         <div class={`input-switch off switch ${autoBetCashOut === false ? "offSwitch" : "onSwitch"}`} >
                                             <span class="oval"></span>
                                         </div>
                                     </div>
                                     <div className='inputAutoCashOut'>
-                                        <input value={autoBetCashOutDimond} type='text' onChange={(e) => setAutoBetCashOutDimond(e.target.value)} disabled={autoBetCashOut === true ? false : true} style={{ color: `${autoBetCashOut === true ? "#9ea0a3" : "white"}` }} />
-                                        < i class="fa-solid fa-xmark"></i>
+                                        <input value={autoBetCashOutDimond} type='text' onChange={(e) => handleAutoCashOut(e)} disabled={autoBetCashOut === true ? false : true} style={{ color: `${autoBetCashOut === true ? "#9ea0a3" : "white"}` }} />
+                                        < i class="fa-solid fa-xmark" onClick={() => setAutoBetCashOutDimond(1.1)}></i>
                                     </div>
                                 </div>
                             </div>

@@ -7,19 +7,18 @@ export default function BetShow(props) {
     const [allBetData, setAllBetData] = useState([])
     const [totalBet, setTotalBet] = useState(0)
     const [allMyData, setMyBetData] = useState([])
-    const { time, socket, userData } = props
+    const { time, socket, userData, runningY } = props
 
     useEffect(() => {
         socket &&
             socket.on("getAllBet", (getAllBet) => {
-                console.log("getAllBet", getAllBet)
                 setAllBetData(getAllBet)
             });
         socket &&
             socket.on("getMyBet", (getMyBet) => {
-                console.log("getMyBet  ", getMyBet)
                 setMyBetData(getMyBet)
             });
+         
     }, [socket])
 
     useEffect(() => {
@@ -35,6 +34,23 @@ export default function BetShow(props) {
         const totalBet = allBetData?.reduce((sum, item) => sum + item?.Bet, 0);
         setTotalBet(totalBet)
     }, [allBetData])
+
+    useEffect(() => {
+        const updatedData = allBetData?.map(item => {
+            if (item.xPercent === Number(runningY) && item?.isFake === true) {
+                return {
+                    ...item,
+                    history: true
+                };
+            }
+            return item;
+        });
+    
+        if (JSON.stringify(updatedData) !== JSON.stringify(allBetData)) {
+            setAllBetData(updatedData);
+        }
+    }, [allBetData,runningY]);
+
 
     const dateFormet = (date) => {
         if (date) {

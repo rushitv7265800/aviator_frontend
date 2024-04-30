@@ -5,10 +5,13 @@ import airplaneImage3 from "./assets/Image/plane-2.svg";
 import airplaneImage4 from "./assets/Image/plane-3.svg";
 import GameLoader from './assets/Image/LoaderGame.svg'
 import GameBg from './assets/Image/bg-rotate-old.svg'
+import { ToastConent } from './ToastConent'
+import AudioPath from './assets/Image/plane-crash.mp3'
 import VideoBg from "./assets/Image/chartBg.mp4";
 import $ from "jquery";
 import { gameChartData, repeatUpDown } from "./gameChartData";
 import BetButtonShow from "./BetButtonShow";
+import { userId } from "./config";
 
 const airplaneImages = [
   airplaneImage1,
@@ -70,12 +73,14 @@ const GameChart = (props) => {
   const [newStartGame, setNewStartGame] = useState(false)
   const [refreshGameTime, setRefereshGameTime] = useState(false)
   const [dottStart, setDottStart] = useState(false)
+  const [autoBetCashOutDimond, setAutoBetCashOutDimond] = useState(1.10)
   const [refreshGame, setRefereshGame] = useState(false)
   const [getCrashPoint, setGetCrashPoint] = useState()
   const [dataNew, setDataNew] = useState([])
   const [yCrash, setYCrash] = useState(false)
   const [checkDataRefersh, setCheckDataRefersh] = useState(true)
   const [crashRocketPostion, setCrashRocketPostionStart] = useState()
+  const [refreshTime, setRefreshTime] = useState()
   const [crashDataShow, setCrashDataShow] = useState([])
   const [yData, setYData] = useState(1)
   const canvasRef = useRef(null);
@@ -105,38 +110,63 @@ const GameChart = (props) => {
       socket.on("YCrash", (yCrash) => {
         setYCrash(yCrash)
       });
+
+    socket &&
+      socket.on("date0Now", (date0Now) => {
+        setRefreshTime(date0Now)
+      });
+
+    socket &&
+      socket.on("coinLess", (coinLess) => {
+        if (coinLess) {
+          ToastConent("You don't enough diamond now, please  recharge first!");
+        }
+      });
   }, [socket]);
 
   useEffect(() => {
-    if (crashRocket === false) {
+    if (!crashRocket) {
       if (time >= 0 && refreshGameTime) {
         const YRefresh = 1 + time * 0.14;
-        const addY = parseFloat(YRefresh);
+        const addY = parseFloat(YRefresh.toFixed(2));
         if (!isNaN(addY)) {
-          setYData(addY.toFixed(2));
+          setYData(addY);
+          setRefereshGameTime(false);
         } else {
           console.error("Invalid yData:", yData);
         }
-        setRefereshGameTime(false)
-      } else {
-        if (time >= 0) {
-          setTimeout(() => {
-            const addY = parseFloat(yData) + 0.01; // Parse yData to ensure it's a number
-            if (!isNaN(addY)) { // Check if addY is a valid number
-              setYData(addY.toFixed(2)); // Call toFixed if addY is a number
-            } else {
-              console.error("Invalid yData:", yData);
-            }
-          }, 70);
-        }
+      } else if (time >= 0) {
+        const timer = setTimeout(() => {
+          const addY = parseFloat(yData) + 0.01;
+
+          if (!isNaN(addY)) {
+            setYData(addY.toFixed(2));
+          } else {
+            console.error("Invalid yData:", yData);
+          }
+        }, 70);
+
+        return () => clearTimeout(timer); // Cleanup the timer on component unmount or re-render
       }
     }
   }, [time, yData, refreshGameTime, crashRocket])
 
   useEffect(() => {
+
+    if (yCrash === 1) {
+      setCrashRocket(true)
+      setRefereshGame(false)
+    } else {
+      if (Number(yData) === yCrash) {
+        setCrashRocket(true)
+        setRefereshGame(false)
+      }
+    }
+  }, [yData, yCrash])
+
+  useEffect(() => {
     if (refreshGame === true && time > 0) {
       setNewStartGame(true)
-      console.log("refreshGame", refreshGame)
     }
 
     if (time >= -13 && time < -8 && crashRocket === false) {
@@ -195,6 +225,19 @@ const GameChart = (props) => {
   }
 
   useEffect(() => {
+    props.setRunningY(yData)
+    if (yData && newStartGame === true) {
+      if (autoBetCashOutDimond === Number(yData)) {
+        socket &&
+          socket.emit("autoCashOut", {
+            AutoCashOutCoin: autoBetCashOutDimond,
+            userId: userId
+          });
+      }
+    }
+  }, [yData, newStartGame, socket])
+
+  useEffect(() => {
     if (crashRocketPostion) {
       let getPostionDataHeight = crashRocketPostion?.height
       let getPostionDataWidth = crashRocketPostion?.width
@@ -212,7 +255,7 @@ const GameChart = (props) => {
 
 
   useEffect(() => {
-    if (time === -3) {
+    if (time === -3 && refreshGame === false) {
       const dataAdd = []
       dataAdd.push(...gameChartData)
       dataAdd.push(...repeatUpDown)
@@ -221,19 +264,34 @@ const GameChart = (props) => {
   }, [time, gameChartData, repeatUpDown, refreshGame])
 
   useEffect(() => {
-    if (refreshGame === true && checkDataRefersh === true) {
-      if (yData < 1.75) {
-        const dataAdd = []
-        const dataGet = gameChartData?.slice(-30)
-        dataAdd.push(...dataGet)
-        dataAdd.push(...repeatUpDown)
-        setDataNew(dataAdd)
-      } else {
-        setDataNew(repeatUpDown)
+    if (refreshGame) {
+      const timeGet = Date.now()
+      const getRealTime = timeGet - refreshTime
+      const getStartData = findNearestIndex(getRealTime)
+      if (getStartData?.array === 1) {
+        const getRefreshData = gameChartData?.slice(getStartData?.index)
+        setDataNew(getRefreshData)
+      } else if (getStartData?.array === 2) {
+        const getRefreshData = repeatUpDown?.slice(getStartData?.index)
+        setDataNew(getRefreshData)
       }
-      setCheckDataRefersh(false)
     }
-  }, [refreshGame, , yData, checkDataRefersh])
+  }, [refreshTime, refreshGame])
+
+  // useEffect(() => {
+  //   if (refreshGame === true && checkDataRefersh === true) {
+  //     if (yData < 1.75) {
+  //       const dataAdd = []
+  //       const dataGet = gameChartData?.slice(-30)
+  //       dataAdd.push(...dataGet)
+  //       dataAdd.push(...repeatUpDown)
+  //       setDataNew(dataAdd)
+  //     } else {
+  //       setDataNew(repeatUpDown)
+  //     }
+  //     setCheckDataRefersh(false)
+  //   }
+  // }, [refreshGame, , yData, checkDataRefersh])
 
 
   const convertWithPx = (data) => {
@@ -249,12 +307,7 @@ const GameChart = (props) => {
     return daataGet;
   };
 
-  useEffect(() => {
-    if (Number(yData) === yCrash) {
-      setCrashRocket(true)
-      setRefereshGame(false)
-    }
-  }, [yData, yCrash])
+
 
   useEffect(() => {
     const resizeCanvas = () => {
@@ -282,7 +335,7 @@ const GameChart = (props) => {
       airplane.onload = () => {
         if (showGameStep?.showLoader === true) {
           if (windowWidth < 500) {
-            context.drawImage(airplane, 0, 330, 60, 55);
+            context.drawImage(airplane, 0, 310, 50, 80);
           } else {
             context.drawImage(airplane, 0, 330, 100, 60);
           }
@@ -296,6 +349,20 @@ const GameChart = (props) => {
       // Clean up here if needed
     };
   }, [showGameStep, airplaneImages, windowWidth]);
+
+
+  const playSoundFunction = async () => {
+    let audio = new Audio(AudioPath);
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      try {
+        await playPromise;
+      } catch (error) {
+        console.error("Error playing audio:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -345,7 +412,7 @@ const GameChart = (props) => {
             dataImgae.src = width < 103 ? airplaneImages[imageIndex] : "";
 
             if (windowWidth < 500) {
-              context.drawImage(dataImgae, widthGet - 6, heightGet - 60, 60, 40);
+              context.drawImage(dataImgae, widthGet - 2, heightGet - 40, 50, 80);
             } else {
               context.drawImage(dataImgae, widthGet - 6, heightGet - 60, 100, 60);
             }
@@ -419,18 +486,21 @@ const GameChart = (props) => {
 
             // Draw the stroke of the path
             context.strokeStyle = "rgb(255, 23, 43)";
-            context.lineWidth = 4;
+            if (windowWidth < 500) {
+              context.lineWidth = 2;
+            } else {
+              context.lineWidth = 4;
+            }
             context.stroke();
             const dataImgae = new Image()
             dataImgae.src = airplaneImages[imageIndex];
             if (windowWidth < 500) {
-              context.drawImage(dataImgae, widthGet - 6, heightGet - 60, 60, 55);
+              context.drawImage(dataImgae, widthGet - 2, heightGet - 80 , 50, 80);
             } else {
-              context.drawImage(dataImgae, widthGet - 6, heightGet - 60, 100, 60);
+              context.drawImage(dataImgae, widthGet - 4, heightGet - 60, 100, 60);
             }
             imageIndex = (imageIndex + 1) % airplaneImages.length;
             dataIndex = (dataIndex + 1) % dataNew.length;
-            // console.log("lastCrashPoint ========== ", width,height)
             if (dataNew[dataIndex]?.width == 65.66 && dataNew[dataIndex]?.height == 21.85) {
               setDottStart(true)
             }
@@ -445,7 +515,7 @@ const GameChart = (props) => {
 
           } else {
             if (windowWidth < 500) {
-              context.drawImage(airplane, 0, 330, 60, 55);
+              context.drawImage(airplane, 0, 330, 50, 80);
             } else {
               context.drawImage(airplane, 0, 330, 100, 60);
             }
@@ -456,19 +526,49 @@ const GameChart = (props) => {
         return cancelAnimationFrame(animationRequestId);
       }
     };
+    if (crashRocket === true) {
+      playSoundFunction()
+    }
     const cleanup = () => {
       cancelAnimationFrame(animationRequestIdCrash);
       cancelAnimationFrame(animationRequestId);
     };
 
-    // Call cleanup function when component unmounts or dependencies change
     return cleanup;
-    // console.log("showGameStepshowGameStepshowGameStepshowGameStepshowGameStepshowGameStepshowGameStepshowGameStep", dataNew, crashDataShow, showGameStep, newStartGame, crashRocket)
+
   }, [dataNew, crashDataShow, newStartGame, crashRocket]);
 
-  // useEffect(() => {
-  //   console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", refreshGame, newStartGame, crashRocket, showGameStep)
-  // }, [newStartGame, crashRocket, showGameStep, refreshGame])
+  function findNearestIndex(data) {
+    let nearestIndex = 0;
+    let diffff = data - gameChartData[gameChartData.length - 1].time;
+    if (diffff <= 0) {
+      let minDiff = Math.abs(data - gameChartData[0].time);
+      for (let i = 1; i < gameChartData.length; i++) {
+        let diff = Math.abs(data - gameChartData[i].time);
+        if (diff < minDiff) {
+          minDiff = diff;
+          nearestIndex = i;
+        }
+      }
+      return { array: 1, index: nearestIndex };
+    } else {
+      let array2LastTime = repeatUpDown[repeatUpDown.length - 1].time;
+      let intoTime = parseInt(diffff / array2LastTime);
+      let data2 = diffff - array2LastTime * intoTime;
+
+      let minDiff = Math.abs(data2 - repeatUpDown[0].time);
+      for (let i = 1; i < repeatUpDown.length; i++) {
+        let diff = Math.abs(data2 - repeatUpDown[i].time);
+        if (diff < minDiff) {
+          minDiff = diff;
+          nearestIndex = i;
+        }
+      }
+      return { array: 2, index: nearestIndex };
+    }
+  }
+
+
 
 
   return (
@@ -491,6 +591,13 @@ const GameChart = (props) => {
         <div>
         </div>
         <img src={GameBg} class="rotateimage rotatebg" />
+        {
+          dottStart ?
+            <div className="shadowBlueImg">
+            </div> :
+            <div className="shadowLighBlueImg">
+            </div>
+        }
         <div className='showCanvasShow'>
           <canvas ref={canvasRef} height={400} />
           <div className="y-axis-animation">
@@ -539,7 +646,8 @@ const GameChart = (props) => {
           <div className="yData" style={{ visibility: `${newStartGame === true ? "visible" : "hidden"}` }}>{yData + "x"}</div>
         </div>
       </div>
-      <BetButtonShow time={time} showGameStep={showGameStep} userData={userData} socket={socket} yData={yData} crashRocket={crashRocket} newStartGame={newStartGame} />
+
+      <BetButtonShow time={time} showGameStep={showGameStep} userData={userData} socket={socket} yData={yData} crashRocket={crashRocket} newStartGame={newStartGame} setAutoBetCashOutDimond={setAutoBetCashOutDimond} autoBetCashOutDimond={autoBetCashOutDimond} />
     </>
   );
 };
