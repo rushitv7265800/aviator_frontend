@@ -272,7 +272,7 @@ export default function BetButtonShow(props) {
                                         </div>
                                         : <div className={`betMainButton ${betButton?.cancel === true ? "waitBet" : betButton?.cashOut === true ? "showBet" : ""}`} onClick={() => handleOnBet()}>
                                             <h6>BET</h6>
-                                            <h5>{parseFloat(betCoin)} Dimond </h5>
+                                            <h5>{parseFloat(betCoin)} USD </h5>
                                         </div>
                             }
                         </div>
@@ -319,7 +319,7 @@ export default function BetButtonShow(props) {
                         </div>
                         <div className='showRightContent '>
                             <div className='showImg'>
-                                <h6>Win Dimond</h6>
+                                <h6>Win USD</h6>
                                 <h5>{(betCashOutCrash * betCashOut)?.toFixed(2)}</h5>
                             </div>
                         </div>

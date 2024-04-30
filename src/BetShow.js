@@ -81,9 +81,9 @@ export default function BetShow(props) {
                                     <thead>
                                         <tr>
                                             <th>Date</th>
-                                            <th>Bet Dimond</th>
+                                            <th>Bet USD</th>
                                             <th>X</th>
-                                            <th>Cash out Dimond</th>
+                                            <th>Cash out USD</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -106,16 +106,16 @@ export default function BetShow(props) {
                             <div className='allBetDetails' style={{ position: "relative" }}>
                                 <h6>All Bets</h6>
                                 <h5>{totalBet}</h5>
-                                <span style={{ color: "white", right: "10%", top: "4px", position: "absolute" }}>{time}</span>
+                                {/* <span style={{ color: "white", right: "10%", top: "4px", position: "absolute" }}>{time}</span> */}
                             </div>
                             <div className='showTable'>
                                 <table>
                                     <thead>
                                         <tr>
                                             <th>User</th>
-                                            <th>Dimond</th>
+                                            <th>USD</th>
                                             <th>X</th>
-                                            <th>Cash out Dimond</th>
+                                            <th>Cash out USD</th>
                                         </tr>
                                     </thead>
                                     <tbody>

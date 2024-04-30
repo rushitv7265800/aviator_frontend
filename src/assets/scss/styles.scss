@@ -1,7 +1,8 @@
 .gameShow {
   background-color: #0e0e0e;
-  overflow: hidden;
-  height: 100vh;
+  // overflow: hidden;
+  // height: 100vh;
+  padding-bottom: 20px;
 
   .navbar {
     padding: 15px 15px;
@@ -128,6 +129,7 @@
 
             img {
               width: 40px;
+              object-fit: cover;
               height: 40px;
               border-radius: 50%;
             }
@@ -227,7 +229,7 @@
     z-index: 99999999;
 
     .mainBox {
-      max-width: 50vh;
+      max-width: 80vh;
       width: 100%;
       height: auto;
 
@@ -536,7 +538,7 @@
       width: 100%;
       background: #1b1c1d;
       padding: 10px;
-      border-radius: 10px 10px 0 0;
+      border-radius: 10px;
 
       .betTableShow {
         .betTopButton {
@@ -597,7 +599,7 @@
 
           .showTable {
             height: 100vh;
-            max-height: calc(100vh - 130px);
+            // max-height: calc(100vh - 130px);
             padding-right: 10px;
             overflow: scroll;
             display: block;

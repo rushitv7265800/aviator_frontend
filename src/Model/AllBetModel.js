@@ -49,9 +49,9 @@ export default function AllBetModel(props) {
                     <thead>
                       <tr>
                         <th>User</th>
-                        <th>Dimond</th>
+                        <th>USD</th>
                         <th>X</th>
-                        <th>Cash out Dimond</th>
+                        <th>Cash out USD</th>
                       </tr>
                     </thead>
                     <tbody>

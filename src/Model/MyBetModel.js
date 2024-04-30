@@ -41,9 +41,9 @@ export default function MyBetModel(props) {
                     <thead>
                       <tr>
                         <th>Date</th>
-                        <th>Bet Dimond</th>
+                        <th>Bet USD</th>
                         <th>X</th>
-                        <th>Cash out Dimond</th>
+                        <th>Cash out USD</th>
                       </tr>
                     </thead>
                     {

@@ -35,6 +35,7 @@ function App() {
           setTimeout(() => {
             socket.emit("startGame", {});
             socket.on("start", (data) => {
+              console.log("data",data)
               setUserData(data);
             });
             socket.on("time", (time) => {
