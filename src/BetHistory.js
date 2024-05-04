@@ -10,7 +10,7 @@ export default function BetHistory(props) {
     useEffect(() => {
         socket &&
             socket.on("lastHistory", (lastHistory) => {
-                setAllBetData(lastHistory)
+                  setAllBetData(lastHistory)
             });
 
     }, [socket]);

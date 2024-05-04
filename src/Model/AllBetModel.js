@@ -3,33 +3,38 @@ import React, { useEffect, useState } from 'react'
 export default function AllBetModel(props) {
   const { open, setOpen, socket,runningY } = props
   const [allBetData, setAllBetData] = useState([])
+  const [refereshGame, setRefereshGame] = useState(false)
 
   useEffect(() => {
     socket &&
       socket.on("getAllBet", (getAllBet) => {
         setAllBetData(getAllBet)
       });
-    // socket &&
-    //     socket.on("getMyBet", (getMyBet) => {
-    //         setMyBetData(getMyBet)
-    //     });
+
+    socket &&
+    socket.on("refresh", (refresh) => {
+      if (refresh === true) {
+        setRefereshGame(refresh)
+      }
+    });
   }, [socket])
 
-//   useEffect(() => {
-//     const updatedData = allBetData?.map(item => {
-//         if (item.xPercent === Number(runningY) && item?.isFake === true) {
-//             return {
-//                 ...item,
-//                 history: true
-//             };
-//         }
-//         return item;
-//     });
+  useEffect(() => {
 
-//     if (JSON.stringify(updatedData) !== JSON.stringify(allBetData)) {
-//         setAllBetData(updatedData);
-//     }
-// }, [allBetData,runningY]);
+      const updatedData = allBetData?.map(item => {
+          if (item.xPercent < Number(runningY) && item?.isFake === true) {
+              return {
+                  ...item,
+                  history: true
+              };
+          }
+          return item;
+      });
+  
+      if (JSON.stringify(updatedData) !== JSON.stringify(allBetData)) {
+          setAllBetData(updatedData);
+      }
+}, [allBetData,runningY]);
 
   return (
     <>
@@ -49,9 +54,9 @@ export default function AllBetModel(props) {
                     <thead>
                       <tr>
                         <th>User</th>
-                        <th>USD</th>
+                        <th>INR</th>
                         <th>X</th>
-                        <th>Cash out USD</th>
+                        <th>Cash out INR</th>
                       </tr>
                     </thead>
                     <tbody>

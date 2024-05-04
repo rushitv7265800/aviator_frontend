@@ -8,7 +8,6 @@ export default function MyBetModel(props) {
     socket &&
       socket.on("getMyBet", (getMyBet) => {
         setMyBetData(getMyBet)
-        console.log("getMyBet", getMyBet)
       });
   }, [socket])
 
@@ -41,9 +40,9 @@ export default function MyBetModel(props) {
                     <thead>
                       <tr>
                         <th>Date</th>
-                        <th>Bet USD</th>
+                        <th>Bet INR</th>
                         <th>X</th>
-                        <th>Cash out USD</th>
+                        <th>Cash out INR</th>
                       </tr>
                     </thead>
                     {

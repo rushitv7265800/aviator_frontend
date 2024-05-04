@@ -18,15 +18,15 @@ export default function GameLimitModel(props) {
                             <div className='modelBody'>
                               <div className='showBoxGame'>
                               <div className='showDetial'>
-                                    <h6>Minimum bet USD :</h6>
+                                    <h6>Minimum bet INR :</h6>
                                     <span>10</span>
                                 </div>
                                 <div className='showDetial'>
-                                    <h6>Maximum bet USD :</h6>
+                                    <h6>Maximum bet INR :</h6>
                                     <span>8000</span>
                                 </div>
                                 <div className='showDetial'>
-                                    <h6>Maximum win for one bet USD :</h6>
+                                    <h6>Maximum win for one bet INR :</h6>
                                     <span>800000</span>
                                 </div>
                               </div>

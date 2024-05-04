@@ -37,7 +37,7 @@ export default function BetShow(props) {
 
     useEffect(() => {
         const updatedData = allBetData?.map(item => {
-            if (item.xPercent === Number(runningY) && item?.isFake === true) {
+            if (item.xPercent < Number(runningY) && item?.isFake === true) {
                 return {
                     ...item,
                     history: true
@@ -81,9 +81,9 @@ export default function BetShow(props) {
                                     <thead>
                                         <tr>
                                             <th>Date</th>
-                                            <th>Bet USD</th>
+                                            <th>Bet INR</th>
                                             <th>X</th>
-                                            <th>Cash out USD</th>
+                                            <th>Cash out INR</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -113,9 +113,9 @@ export default function BetShow(props) {
                                     <thead>
                                         <tr>
                                             <th>User</th>
-                                            <th>USD</th>
+                                            <th>INR</th>
                                             <th>X</th>
-                                            <th>Cash out USD</th>
+                                            <th>Cash out INR</th>
                                         </tr>
                                     </thead>
                                     <tbody>
